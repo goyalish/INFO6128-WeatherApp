@@ -174,7 +174,7 @@ const shareWeather = () => {
   if (navigator.share) {
     navigator.share({
       title: "Today's Weather",
-      text: data.main.temp + "°C",
+      text: "°C",
     })
       .then(() => console.log('Successful share'))
       .catch((error) => console.log('Error sharing', error));
