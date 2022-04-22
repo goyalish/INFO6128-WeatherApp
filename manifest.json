@@ -5,7 +5,7 @@
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#fff",
-  "theme_color": "#000",
+  "theme_color": "#87CEEB",
   "icons": [
     {
       "src": "images/weather_icon.png",
