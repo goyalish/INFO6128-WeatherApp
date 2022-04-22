@@ -1,74 +1,123 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Pokedex</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#75929D" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;900&display=swap" rel="stylesheet" />
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icon.png" />
-    <link rel="icon" type="image/png" href="assets/images/icon.png" sizes="32x32" />
-    <link rel="icon" type="image/png" href="assets/images/icon.png" sizes="16x16" />
-    <link rel="manifest" href="manifest.json" />
-    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css" />
-    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css" />
-    <link rel="stylesheet" type="text/css" href="src/app.css" />
-  
-  </head>
 
-  <body>
-    <ons-navigator id = "navigator" swipeable page="index.html"></ons-navigator>
-    <template id="index.html">
-      <ons-page id="home">
-        <ons-toolbar>
-          <div class="center">My Pokedex</div>
-        </ons-toolbar>
+<head>
+  <title>Weather</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#75929D" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;900&display=swap" rel="stylesheet" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icon.png" />
+  <link rel="icon" type="image/png" href="assets/images/icon.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="assets/images/icon.png" sizes="16x16" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css" />
+  <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css" />
+  <link rel="stylesheet" type="text/css" href="src/appp.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin="" />
+  <script src="https://unpkg.com/localforage@1.10.0/dist/localforage.min.js"></script>
+</head>
 
-        <ons-list id="pokemonList">
-          
-        </ons-list>
-      </ons-page>
-    </template>
-
-    <template id="details.html">
-      <ons-page id="details">
-        <ons-toolbar>
-          <div class="left"><ons-back-button>Back</ons-back-button></div>
-          <div id="tbTitle" class="center">Pokedex</div>
-        </ons-toolbar>
-
-        <ons-card>
-          <img id="imgPokemon" style="width: 30%"/>
-          <div id="pokemonTitle" class="title">Cool Lightning</div>
-          <ons-list-header>TYPES</ons-list-header>
-          <ons-list id="typesList">
-            
-          </ons-list>
-          <ons-list-header>STATS</ons-list-header>
-          <ons-list id="statsList">
-
-          </ons-list>
+<body>
+  <ons-navigator id="navigator" swipeable page="index.html"></ons-navigator>
+  <template id="index.html">
+    <ons-page id="home" class="home">
+      <div class="app-wrapp">
+        <header>
+          <ons-fab id="locateMe" position="bottom right">
+            <ons-icon icon="md-gps"></ons-icon>
+          </ons-fab>
+          <ons-search-input id="searchbar" type="text" placeholder="Search for a city" autofocus class="serach-box" />
+        </header>
+        <main>
+          <section class="location">
+            <div id="city" class="city">Delhi, IN</div>
+            <div id="date" class="date">Thursday 14 April 2022</div>
+          </section>
+          <div class="current">
+            <div id="temp" class="temp">15°C</div>
+            <div id="weather" class="weather">Sunny</div>
+            <div id="hi-low" class="hi-low">13°C / 16°C</div>
+          </div>
+        </main>
+        <ons-card class="widget-container">
+          <div>
+            <div class="top-right">
+              <h2 id="time">Time</h2>
+            </div>
+            <div class="top-left">
+              <img id="homeIcon" class="weather-icon" src="https://myleschuahiock.files.wordpress.com/2016/02/sunny2.png">
+            </div>
+            <div class="bottom-right">
+              <div class="other-details-key">
+                <p>Feels Like</p>
+                <p>Humidity</p>
+                <p>Sunrise Time</p>
+                <p>Sunset Time</p>
+              </div>
+              <div class="other-details-values">
+                <p id="feels-like" class="feels-like">35°C</p>
+                <p id="humidity" class="humidity">92</p>
+                <p id="sunrise-time" class="sunrise-time">0:00</p>
+                <p id="sunset-time" class="sunset-time">0:00</p>
+                <p id="see-more">See More...</p>
+              </div>
+            </div>
+          </div>
         </ons-card>
-      </ons-page>
-    </template>
-  </body>
+        <ons-button modifier="large" id="btnDays">7 Days Weather Forcast</ons-button>
+      </div>
+    </ons-page>
+  </template>
 
-  <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
-  
+  <template id="hours.html">
+    <ons-page id="hours">
+      <ons-toolbar>
+        <div class="left">
+          <ons-back-button>Back</ons-back-button>
+        </div>
+        <div id="tbTitle" class="center">Hourly weather</div>
+      </ons-toolbar>
+      <ons-list id="hoursList">
+      </ons-list>
+    </ons-page>
+  </template>
 
-  <script type="text/javascript">
-    const registerSW = async () => {
-      if ("serviceWorker" in navigator) {
-        try {
-          await navigator.serviceWorker.register(`${window.location.href}service-worker.js`);
-          console.log("Service Worker Registered");
-        } catch (e) {
-          console.error("Error registering Service Worker...", e);
-        }
+  <template id="forecast.html">
+    <ons-page id="forecast">
+      <ons-toolbar>
+        <div class="left">
+          <ons-back-button>Back</ons-back-button>
+        </div>
+        <div class="center">Weather Forecase</div>
+      </ons-toolbar>
+      <ons-list id="dayList">
+      </ons-list>
+    </ons-page>
+  </template>
+</body>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+<script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
+
+
+<script type="text/javascript">
+  const registerSW = async () => {
+    if ("serviceWorker" in navigator) {
+      try {
+        await navigator.serviceWorker.register(`${window.location.href}service-worker.js`);
+        console.log("Service Worker Registered");
+      } catch (e) {
+        console.error("Error registering Service Worker...", e);
       }
-    };
-    registerSW();
-  </script>
-  <script src="src/app.js"></script>
+    }
+  };
+  registerSW();
+</script>
+<script src="src/app.js"></script>
+
 </html>

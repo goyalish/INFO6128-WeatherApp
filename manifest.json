@@ -1,6 +1,6 @@
 {
-  "name": "Pokedex",
-  "short_name": "Pokedex",
+  "name": "Weather App",
+  "short_name": "Weather App",
   "start_url": "https://goyalish.github.io/pokedex/",
   "display": "standalone",
   "orientation": "portrait",

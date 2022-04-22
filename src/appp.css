@@ -1,0 +1,233 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat";
+}
+
+button {
+  cursor: pointer;
+}
+#hoursList  {
+  font-family: "Montserrat";
+  background: url("../images/cloud_image.jpeg") no-repeat;
+  background-position: top center;
+  background-size: cover;
+}
+
+#dayList  {
+  font-family: "Montserrat";
+  background: url("../images/night.webp") no-repeat;
+  background-position: top center;
+  background-size: cover;
+}
+
+#home .page__background  {
+  font-family: "Montserrat";
+  background: url("../images/cloud_light.jpeg") no-repeat;
+  background-position: top center;
+  background-size: cover;
+}
+
+#searchbar {
+  background: #fff;
+  border: 2px solid #b0bec5;
+  border-radius: 10px;
+}
+
+.app-wrapp {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.3),
+    rgba(0, 0, 0, 0.6)
+  );
+}
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 15px;
+}
+
+header input {
+  width: 100%;
+  max-width: 280px;
+  padding: 15px 15px;
+  border: none;
+  outline: none;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  border-bottom: 1px solid #fff;
+  color: #fff;
+  font-weight: 300px;
+  font-size: 20px;
+  transition: 0.2s ease-out;
+}
+
+::placeholder {
+  color: #fff;
+}
+
+header input:focus {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.location .city {
+  color: #fff;
+  font-size: 32px;
+  font-weight: 600px;
+  margin-bottom: 5px;
+}
+
+.location .date {
+  color: #fff;
+  font-size: 18px;
+}
+
+.current .temp {
+  color: #fff;
+  font-size: 102px;
+  font-weight: 900;
+  margin: 30px, 0;
+  text-shadow: 2px, 10px rgba(0, 0, 0, 0.4);
+}
+
+.current .weather {
+  color: #fff;
+  font-size: 32px;
+  font-style: italic;
+}
+
+.current .hi-low {
+  color: #fff;
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.widget-container {
+  width: 350px;
+  height: 270px;
+  background-color: rgba(192, 192, 192, 0.3);
+  color: #fff;
+  margin: 0 auto;
+}
+
+.card{
+  padding: 0px;
+}
+
+.top-left {
+  height: 50%;
+  width: 50%;
+  padding: 10px 0 0 0;
+}
+.top-right {
+  float: right;
+  padding: 15px 60px 0 0;
+}
+
+.bottom-left {
+  height: 40%;
+  float: left;
+  margin: 0;
+  padding: 20px 10px 0 30px;
+}
+
+.bottom-right {
+  float: right;
+  padding: 0 20px 0 30px;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+#time {
+  font-weight: 400;
+  font-size: 25px;
+}
+
+.top-left > a {
+  text-decoration: none;
+  color: white;
+}
+
+.top-left > a:hover {
+  color: #b0bec5;
+}
+
+.top-left > img {
+  width: 120px;
+  height: 120px;
+  display: block;
+  margin: 15px auto 0 auto;
+}
+
+#temperature,
+#celsius {
+  display: inline;
+  vertical-align: middle;
+}
+
+#temperature {
+  font-size: 60px;
+  font-weight: 800;
+  margin-right: 5px;
+}
+
+#celsius {
+  margin-right: 10px;
+}
+
+#celsius,
+#temp-divider {
+  font-size: 30px;
+  font-weight: 800;
+}
+
+#celsius:hover,
+#fahrenheit:hover {
+  cursor: pointer;
+}
+
+.other-details-key {
+  float: left;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.other-details-values {
+  float: left;
+  font-size: 16px;
+  font-weight: 400;
+  margin-left: 40px;
+}
+
+#see-more {
+  color: #fff;
+  font-size: x-large;
+}
+a:active {
+  color: chartreuse;
+}
+
+#btnDays{
+  margin-top: 20px;
+  width: 60%;
+  align-self: center;
+}
