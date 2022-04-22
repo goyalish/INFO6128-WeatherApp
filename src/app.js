@@ -15,7 +15,8 @@ var elements = {
   humidity: null,
   sunrise: null,
   sunset: null,
-  homeIcon: null
+  homeIcon: null,
+  shareBtn: null
 }
 
 const hoursElements = {
@@ -27,6 +28,8 @@ const dailyElements = {
 }
 var weather = {};
 var city = "";
+var currentTemp = "";
+var currentWeather = "";
 var coords = {
   latitude: 28.65149799130413,
   longitude: 77.0121996488767
@@ -62,7 +65,7 @@ document.addEventListener("init", async (e) => {
     elements.see_more.addEventListener('click', seeMore)
     elements.locateMe.addEventListener('click', locate)
     elements.btnDays.addEventListener('click', daysForecast)
-
+    elements.shareBtn.addEventListener('click', shareWeather)
   } else if (e.target.id === "hours") {
     console.log("onLine: " +window.navigator.onLine);
     initHoursElements();
@@ -87,6 +90,20 @@ document.addEventListener("init", async (e) => {
     }
   }
 });
+
+const shareWeather = () => {
+  let message = `City: ${city} \n
+  Temperature: ${currentTemp} \n
+  Weather: ${currentWeather}` 
+  if (navigator.share) {
+    navigator.share({
+      title: "Today's Weather",
+      text: message,
+    })
+      .then(() => console.log('Successful share'))
+      .catch((error) => console.log('Error sharing', error));
+  }
+}
 
 const initHoursElements = () => {
   hoursElements.hoursList = document.querySelector("#hoursList");
