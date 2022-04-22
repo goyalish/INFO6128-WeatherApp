@@ -1,6 +1,5 @@
 window.addEventListener("DOMContentLoaded", () => { });
 var elements = {
-  navigator: null,
   searchButton: null,
   searchbar: null,
   city: null,
@@ -184,15 +183,14 @@ const onLocateFailure = (error) => {
 };
 
 const locate = () => {
-  if (!elements.navigator.geolocation) {
+  if (!navigator.geolocation) {
     console.log('Geolocation is not supported by your browser!');
   } else {
-    elements.navigator.geolocation.getCurrentPosition(onLocateSuccess, onLocateFailure);
+    navigator.geolocation.getCurrentPosition(onLocateSuccess, onLocateFailure);
   }
 };
 
 const initElements = () => {
-  elements.navigator = document.querySelector("#navigator");
   elements.searchbar = document.querySelector("#searchbar")
   elements.city = document.querySelector("#city")
   elements.date = document.querySelector("#date")
@@ -216,6 +214,11 @@ const initUI = () => {
   elements.time.innerHTML = "Time: " + time;
 }
 
+const serviceWorkerNotify = async (title, msg) => {
+  const registration = await navigator.serviceWorker.ready;
+  if (registration) return registration.showNotification(title, msg);
+}
+
 const notifyUser = async (content) => {
   const permission = await askPermission();
   if (permission) {
@@ -224,8 +227,8 @@ const notifyUser = async (content) => {
   }
 }
 
-const notify = (title, msg) => new Notification(title, msg);
-
+// const notify = (title, msg) => new Notification(title, msg);
+const notify = (title, msg) => !msg?.actions ? new Notification(title, msg) : serviceWorkerNotify(title, msg);
 const askPermission = async () => {
   // Is Web Notifications available on the browser
   if (!("Notification" in window)) {
@@ -425,13 +428,13 @@ const changePage = (page, data) => {
   document.querySelector("#navigator").pushPage(page, { data });
 };
 
-const popPage = () => elements.navigator.popPage();
+const popPage = () => document.querySelector("#navigator").popPage();
 // Padd the history with an extra page so that we don't exit right away
 window.addEventListener('load', () => window.history.pushState({}, ''));
 // When the browser goes back a page, if our navigator has more than one page we pop the page and prevent the back event by adding a new page
 // Otherwise we trigger a second back event, because we padded the history we need to go back twice to exit the app.
 window.addEventListener('popstate', () => {
-  const { pages } = elements.navigator;
+  const { pages } = document.querySelector("#navigator");
   if (pages && pages.length > 1) {
     popPage();
     window.history.pushState({}, '');
