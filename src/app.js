@@ -29,6 +29,8 @@ const dailyElements = {
 }
 var weather = {};
 var city = "";
+var currentTemp = "";
+var currentWeather = "";
 var coords = {
   latitude: 28.65149799130413,
   longitude: 77.0121996488767
@@ -170,11 +172,13 @@ const locate = () => {
 };
 
 const shareWeather = () => {
-  console.log("share button clicked");
+  let message = `City: ${city} \n
+  Temperature: ${currentTemp} \n
+  Weather: ${currentWeather}` 
   if (navigator.share) {
     navigator.share({
       title: "Today's Weather",
-      text: "°C",
+      text: message,
     })
       .then(() => console.log('Successful share'))
       .catch((error) => console.log('Error sharing', error));
@@ -294,7 +298,8 @@ const fetchWeather = (any) => {
         let icon = data.weather[0].icon;
         elements.homeIcon.src = `https://openweathermap.org/img/wn/${icon}@2x.png`;
         notifyUser(elements.city.innerHTML + " " + elements.temp.innerHTML);
-        saveCurrentWeather();
+        currentTemp = parseInt(data.main.temp) + "°C";
+        currentWeather = data.weather[0].main;
       });
   }
 
