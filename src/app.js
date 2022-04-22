@@ -57,7 +57,7 @@ document.addEventListener("init", (e) => {
     elements.searchbar.addEventListener('keypress', fetchWeather)
     elements.see_more.addEventListener('click', seeMore)
     elements.locateMe.addEventListener('click', locate)
-    elements.shareBtn.addEventListener('click', share)
+    elements.shareBtn.addEventListener('click', shareWeather)
     document.querySelector("#btnDays").addEventListener('click', () => { changePage("forecast.html") })
 
   } else if (e.target.id === "hours") {
@@ -169,7 +169,7 @@ const locate = () => {
   }
 };
 
-const share = () => {
+const shareWeather = () => {
   console.log("share button clicked");
   if (navigator.share) {
     navigator.share({
