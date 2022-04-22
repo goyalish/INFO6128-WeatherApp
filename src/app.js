@@ -298,6 +298,8 @@ const fetchWeather = (any) => {
       .then((data) => {
         console.log(data);
         // weather = { ...data };
+        currentTemp = parseInt(data.main.temp) + "°C";
+        currentWeather = data.weather[0].main;
         bindWeatherData(data)
         notifyUser(elements.city.innerHTML, elements.temp.innerHTML);
         saveCurrentWeather('current_weather', data);
