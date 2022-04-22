@@ -223,6 +223,7 @@ const initElements = () => {
   elements.sunrise = document.querySelector("#sunrise-time");
   elements.sunset = document.querySelector("#sunset-time");
   elements.homeIcon = document.querySelector("#homeIcon");
+  elements.shareBtn = document.querySelector("#share-btn");
 }
 
 const initUI = () => {
