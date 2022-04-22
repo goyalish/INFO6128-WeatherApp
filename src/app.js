@@ -33,8 +33,22 @@ var coords = {
   longitude: 77.0121996488767
 };
 document.addEventListener("init", (e) => {
+  //e.currentTarget.URL
   initElements();
   askPermission();
+  const params = new Proxy(new URLSearchParams(window.location.search), {
+    get: (searchParams, prop) => searchParams.get(prop),
+  });
+  // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
+  let value = params.page;
+  console.log(value);
+  if(value == "hourly_forecast") {
+    changePage("hours.html")
+    return
+  } else if(value == "daily_forecast") {
+    changePage("forecast.html")
+    return
+  }
   if (e.target.id === "home") {
     var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     var today = new Date();
