@@ -171,6 +171,14 @@ const locate = () => {
 
 const share = () => {
   console.log("share button clicked");
+  if (navigator.share) {
+    navigator.share({
+      title: "Today's Weather",
+      text: data.main.temp + "°C",
+    })
+      .then(() => console.log('Successful share'))
+      .catch((error) => console.log('Error sharing', error));
+  }
 }
 
 const initElements = () => {
