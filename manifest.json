@@ -63,7 +63,7 @@
     }
   ],
   "share_target": {
-    "action": "https://goyalish.github.io/pokedex/index.html",
+    "action": "https://goyalish.github.io/INFO6128-WeatherApp/index.html",
     "method": "GET",
     "params": {
       "title": "title",

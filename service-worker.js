@@ -1,6 +1,22 @@
 const version = 1.2;
 const cacheName = `MyCacheName ${version}`;
-const filesToCache = ["offline.html", "assets/images/icon.png", "assets/images/offline.svg", "src/app.css"];
+const filesToCache = [
+"index.html",
+"offline.html", 
+"images/cloud_image.jpeg",
+"images/cloud_light.jpeg",
+"images/night.webp",
+"images/weather_icon.png",
+"images/weather_offline.png",
+"assets/images/icon.png",
+"assets/images/offline.svg", 
+"src/appp.css",
+"https://myleschuahiock.files.wordpress.com/2016/02/sunny2.png",
+"https://unpkg.com/onsenui/css/onsenui.css",
+"https://unpkg.com/onsenui/css/onsen-css-components.min.css",
+"https://unpkg.com/localforage@1.10.0/dist/localforage.min.js",
+"https://unpkg.com/onsenui/js/onsenui.min.js",
+];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(cacheName).then(async (cache) => {
@@ -26,7 +42,7 @@ self.addEventListener("fetch", (event) => {
         console.log('Network error...', error);
         console.log('Attempting Offline fallback.');
         return caches.open(cacheName).then((cache) => {
-          return cache.match("offline.html");
+          return cache.match("index.html");
         });
       });
     })
