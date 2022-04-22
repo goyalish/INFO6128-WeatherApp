@@ -1,39 +1,39 @@
 {
   "name": "Weather App",
   "short_name": "Weather App",
-  "start_url": "https://goyalish.github.io/pokedex/",
+  "start_url": "https://goyalish.github.io/INFO6128-WeatherApp/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#fff",
   "theme_color": "#000",
   "icons": [
     {
-      "src": "assets/images/icon.png",
+      "src": "images/weather_icon.png",
       "type": "image/png",
       "sizes": "48x48"
     },
     {
-      "src": "assets/images/icon.png",
+      "src": "images/weather_icon.png",
       "type": "image/png",
       "sizes": "96x96"
     },
     {
-      "src":"assets/images/icon.png",
+      "src":"images/weather_icon.png",
       "sizes": "144x144",
       "type": "image/png"
     },
     {
-      "src": "assets/images/icon.png",
+      "src": "images/weather_icon.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "assets/images/icon.png",
+      "src": "images/weather_icon.png",
       "type": "image/png",
       "sizes": "512x512"
     },
     {
-      "src": "assets/images/maskable_icon.png",
+      "src": "images/weather_icon.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -41,18 +41,25 @@
   ],
   "shortcuts": [
     {
-      "name": "Open Messages",
-      "short_name": "Messages",
-      "description": "Open the app to your messages",
-      "url": "https://goyalish.github.io/pokedex/messages",
-      "icons": [{ "src": "assets/images/messages.png", "sizes": "192x192" }]
+      "name": "Main Page",
+      "short_name": "Main Page",
+      "description": "Home page of weather app",
+      "url": "https://goyalish.github.io/INFO6128-WeatherApp/index.html",
+      "icons": [{ "src": "images/weather_icon.png", "sizes": "192x192" }]
     },
     {
-      "name": "Open Settings",
-      "short_name": "Settings",
-      "description": "Open the app to the settings",
-      "url": "https://goyalish.github.io/pokedex/settings",
-      "icons": [{ "src": "assets/images/settings.png", "sizes": "192x192" }]
+      "name": "Daily forecast",
+      "short_name": "Daily forecast",
+      "description": "See 7 days of weather forecast",
+      "url": "https://goyalish.github.io/INFO6128-WeatherApp/index.html?page=daily_forecast",
+      "icons": [{ "src": "images/weather_icon.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Hourly forecast",
+      "short_name": "Hourly forecast",
+      "description": "See today's weather forecase for every hour",
+      "url": "https://goyalish.github.io/INFO6128-WeatherApp/index.html?page=hourly_forecast",
+      "icons": [{ "src": "images/weather_icon.png", "sizes": "192x192" }]
     }
   ],
   "share_target": {
