@@ -184,15 +184,15 @@ const onLocateFailure = (error) => {
 };
 
 const locate = () => {
-  if (!navigator.geolocation) {
+  if (!elements.navigator.geolocation) {
     console.log('Geolocation is not supported by your browser!');
   } else {
-    navigator.geolocation.getCurrentPosition(onLocateSuccess, onLocateFailure);
+    elements.navigator.geolocation.getCurrentPosition(onLocateSuccess, onLocateFailure);
   }
 };
 
 const initElements = () => {
-  navigator = document.querySelector("#navigator");
+  elements.navigator = document.querySelector("#navigator");
   elements.searchbar = document.querySelector("#searchbar")
   elements.city = document.querySelector("#city")
   elements.date = document.querySelector("#date")
@@ -425,13 +425,13 @@ const changePage = (page, data) => {
   document.querySelector("#navigator").pushPage(page, { data });
 };
 
-const popPage = () => navigator.popPage();
+const popPage = () => elements.navigator.popPage();
 // Padd the history with an extra page so that we don't exit right away
 window.addEventListener('load', () => window.history.pushState({}, ''));
 // When the browser goes back a page, if our navigator has more than one page we pop the page and prevent the back event by adding a new page
 // Otherwise we trigger a second back event, because we padded the history we need to go back twice to exit the app.
 window.addEventListener('popstate', () => {
-  const { pages } = navigator;
+  const { pages } = elements.navigator;
   if (pages && pages.length > 1) {
     popPage();
     window.history.pushState({}, '');
