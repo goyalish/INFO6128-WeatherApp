@@ -100,7 +100,7 @@ function createHoursItem(hourData) {
   return item;
 }
 
-//icon http://openweathermap.org/img/wn/10d@2x.png
+//icon https://openweathermap.org/img/wn/10d@2x.png
 
 function createDayItem(dayData) {
   let item = document.createElement("ons-list-item");
@@ -228,16 +228,16 @@ const askPermission = async () => {
 
 const fetchWeather = (any) => {
   // one call https://api.openweathermap.org/data/2.5/onecall?lat=35&lon=139&appid=443d32ef6178b04a1373ff5dc5253bc3&exclude=minutely&units=metric
-  //http://api.openweathermap.org/data/2.5/weather?q=delhi&APPID=443d32ef6178b04a1373ff5dc5253bc3&units=metric
+  //https://api.openweathermap.org/data/2.5/weather?q=delhi&APPID=443d32ef6178b04a1373ff5dc5253bc3&units=metric
 
   if (any.keyCode == 13) {
     const APP_ID = "443d32ef6178b04a1373ff5dc5253bc3";
     let units = "metric";
     city = any.currentTarget ? any.currentTarget.value : "";
-    let url = "http://api.openweathermap.org/data/2.5/weather?q="
+    let url = "https://api.openweathermap.org/data/2.5/weather?q="
       + city + "&APPID=" + APP_ID + "&units=" + units
     if (city == "") {
-      url = "http://api.openweathermap.org/data/2.5/weather?lat=" + coords.latitude
+      url = "https://api.openweathermap.org/data/2.5/weather?lat=" + coords.latitude
         + "&lon=" + coords.longitude
         + city + "&APPID=" + APP_ID + "&units=" + units;
     }
@@ -277,7 +277,7 @@ const fetchWeather = (any) => {
         elements.sunset.innerHTML = sunset;
 
         let icon = data.weather[0].icon;
-        elements.homeIcon.src = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+        elements.homeIcon.src = `https://openweathermap.org/img/wn/${icon}@2x.png`;
         notifyUser(elements.city.innerHTML + " " + elements.temp.innerHTML);
         saveCurrentWeather();
       });
@@ -301,7 +301,7 @@ const fetchDailyWeather = () => {
         daysWeather.list.forEach(element => {
 
           let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-          let icon = `http://openweathermap.org/img/wn/${element.weather[0].icon}@2x.png`;
+          let icon = `https://openweathermap.org/img/wn/${element.weather[0].icon}@2x.png`;
           var d = new Date(0);
           d.setUTCSeconds(element.dt)
           var hours = d.getHours();
@@ -346,7 +346,7 @@ const fetchHourlyWeather = () => {
           var d = new Date(0);
           d.setUTCSeconds(element.dt)
           var hours = d.getHours();
-          let icon = `http://openweathermap.org/img/wn/${element.weather[0].icon}@2x.png`;
+          let icon = `https://openweathermap.org/img/wn/${element.weather[0].icon}@2x.png`;
           var hourData = {
             hours: hours,
             temp: parseInt(element.main.temp),
