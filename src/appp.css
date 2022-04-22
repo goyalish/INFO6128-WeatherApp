@@ -123,6 +123,7 @@ main {
   margin: 0 auto;
 }
 
+
 .card{
   padding: 0px;
 }
@@ -146,7 +147,7 @@ main {
 
 .bottom-right {
   float: right;
-  padding: 0 20px 0 30px;
+  padding: 0 10px 0 30px;
 }
 
 h1,
