@@ -215,8 +215,11 @@ const initUI = () => {
 }
 
 const serviceWorkerNotify = async (title, msg) => {
+  const msgOp = {
+    body: msg
+  }
   const registration = await navigator.serviceWorker.ready;
-  if (registration) return registration.showNotification(title, msg);
+  if (registration) return registration.showNotification(title, msgOp);
 }
 
 const notifyUser = async (title, msg) => {
