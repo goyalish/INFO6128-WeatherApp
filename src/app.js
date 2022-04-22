@@ -219,10 +219,10 @@ const serviceWorkerNotify = async (title, msg) => {
   if (registration) return registration.showNotification(title, msg);
 }
 
-const notifyUser = async (content) => {
+const notifyUser = async (title, msg) => {
   const permission = await askPermission();
   if (permission) {
-    const rslt = notify(content);
+    const rslt = notify(title, msg);
     console.log('Success!', rslt);
   }
 }
@@ -278,7 +278,7 @@ const fetchWeather = (any) => {
         console.log(data);
         // weather = { ...data };
         bindWeatherData(data)
-        notifyUser(elements.city.innerHTML + " " + elements.temp.innerHTML);
+        notifyUser(elements.city.innerHTML, elements.temp.innerHTML);
         saveCurrentWeather('current_weather', data);
       });
   }
