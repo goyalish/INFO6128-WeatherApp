@@ -56,7 +56,7 @@ document.addEventListener("init", (e) => {
     elements.searchbar.addEventListener('keypress', fetchWeather)
     elements.see_more.addEventListener('click', seeMore)
     elements.locateMe.addEventListener('click', locate)
-    document.querySelector("#btnDays").addEventListener('click', () => { changePage("forecast.html") })
+    elements.btnDays.addEventListener('click', daysForecast)
 
   } else if (e.target.id === "hours") {
     initHoursElements();
@@ -135,13 +135,15 @@ function createDayItem(dayData) {
   return item;
 }
 
+const daysForecast = () => {
+  changePage("forecast.html")
+}
+
 const seeMore = () => {
   changePage("hours.html")
 }
 
 const onLocateSuccess = (position) => {
-  // const coords = position.coords;
-  // const { coords } = position;
   coords = position.coords
   console.log(coords.latitude, coords.longitude);
   fetchWeather({ keyCode: 13 });
@@ -177,14 +179,13 @@ const initElements = () => {
   elements.hi_low = document.querySelector("#hi-low")
   elements.locateMe = document.querySelector("#locateMe")
   elements.see_more = document.querySelector("#see-more")
-  btnDays = document.querySelector("#btnDays");
+  elements.btnDays = document.querySelector("#btnDays");
   elements.time = document.querySelector("#time");
   elements.feels_like = document.querySelector("#feels-like");
   elements.humidity = document.querySelector("#humidity");
   elements.sunrise = document.querySelector("#sunrise-time");
   elements.sunset = document.querySelector("#sunset-time");
   elements.homeIcon = document.querySelector("#homeIcon");
-
 }
 
 const notifyUser = async (content) => {
@@ -385,90 +386,9 @@ const loadCurrentWeather = async () => {
   }
 };
 
-const addDataToList = (data) => {
-  var list = document.querySelector("#pokemonList");
-  data.results.forEach((element, index) => {
-    list.appendChild(createChevronListItem(element.name, index));
-  });
-};
-
-const itemClickListener = (e) => {
-  changePage("details.html", { pageId: e.currentTarget.id });
-};
-
-const fetchDetailsPageData = (pageId) => {
-  fetch("https://pokeapi.co/api/v2/pokemon/" + pageId)
-    .then((response) => response.json())
-    .then((data) => bindDetailPage(data));
-};
-
-const bindDetailPage = (data) => {
-  let tbTitle = document.querySelector("#tbTitle");
-  let imgPokemon = document.querySelector("#imgPokemon");
-  let pokemonTitle = document.querySelector("#pokemonTitle");
-  tbTitle.innerHTML = data.species.name;
-  imgPokemon.src = data.sprites.front_default;
-  pokemonTitle.innerHTML = data.species.name + " #" + data.game_indices[0].game_index;
-  addTypesList(data.types);
-  addStatList(data.stats);
-};
-
-const addTypesList = (types) => {
-  let typesListNode = document.querySelector("#typesList");
-  types.forEach((typeItem) => {
-    typesListNode.appendChild(createListItem(typeItem.type.name));
-  });
-}
-
-const addStatList = (stats) => {
-  let statsListNode = document.querySelector("#statsList");
-  stats.forEach((statsItem) => {
-    statsListNode.appendChild(
-      createListItem(
-        statsItem.stat.name, statsItem.effort, statsItem.base_stat
-      ));
-  });
-}
-
 const changePage = (page, data) => {
   document.querySelector("#navigator").pushPage(page, { data });
 };
-
-function createChevronListItem(input, index) {
-  let item = document.createElement("ons-list-item");
-  item.setAttribute("modifier", "chevron");
-  item.setAttribute("tappable", "true");
-  item.innerHTML = input;
-  item.id = "" + (index + 1);
-  item.addEventListener("click", itemClickListener);
-  return item;
-}
-
-function createListItem(name, effort, stat) {
-  let item = document.createElement("ons-list-item");
-  var spanItem = document.createElement("span");
-  spanItem.innerHTML = name;
-  spanItem.style.marginRight = "10px";
-  item.appendChild(spanItem);
-
-  if (typeof effort !== "undefined") {
-    spanItem = document.createElement("span");
-    spanItem.className = "notification";
-    spanItem.style.backgroundColor = "blue";
-    spanItem.style.marginRight = "10px";
-    spanItem.innerHTML = effort;
-    item.appendChild(spanItem);
-  }
-
-  if (typeof stat !== "undefined") {
-    spanItem = document.createElement("span");
-    spanItem.className = "notification";
-    spanItem.style.backgroundColor = "red";
-    spanItem.innerHTML = stat;
-    item.appendChild(spanItem);
-  }
-  return item;
-}
 
 const popPage = () => navigator.popPage();
 // Padd the history with an extra page so that we don't exit right away
