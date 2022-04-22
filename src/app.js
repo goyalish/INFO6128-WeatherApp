@@ -32,9 +32,10 @@ var coords = {
   latitude: 28.65149799130413,
   longitude: 77.0121996488767
 };
-document.addEventListener("init", (e) => {
+document.addEventListener("init", async (e) => {
   //e.currentTarget.URL
   initElements();
+  initUI();
   askPermission();
   const params = new Proxy(new URLSearchParams(window.location.search), {
     get: (searchParams, prop) => searchParams.get(prop),
@@ -42,12 +43,17 @@ document.addEventListener("init", (e) => {
   // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
   let value = params.page;
   console.log(value);
-  if(value == "hourly_forecast") {
+  if (value == "hourly_forecast") {
     changePage("hours.html")
     return
-  } else if(value == "daily_forecast") {
+  } else if (value == "daily_forecast") {
     changePage("forecast.html")
     return
+  }
+  let currentWeather = await loadCurrentWeather('current_weather')
+  if (currentWeather) {
+    console.log(currentWeather);
+    bindWeatherData(currentWeather)
   }
   if (e.target.id === "home") {
     var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -59,11 +65,27 @@ document.addEventListener("init", (e) => {
     elements.btnDays.addEventListener('click', daysForecast)
 
   } else if (e.target.id === "hours") {
+    console.log("onLine: " +window.navigator.onLine);
     initHoursElements();
-    fetchHourlyWeather()
+    if(window.navigator.onLine) {
+      fetchHourlyWeather()
+    } else {
+      let data = await loadCurrentWeather('hourly_weather')
+      if(data) {
+        bindHourlyWeather(data)
+      }
+    }
+    
   } else if (e.target.id === "forecast") {
     dailyElements.dayList = document.querySelector("#dayList");
-    fetchDailyWeather();
+    if(window.navigator.onLine) {
+      fetchDailyWeather();
+    } else {
+      let data = await loadCurrentWeather('daily_weather')
+      if(data) {
+        bindDailyWeather(data)
+      }
+    }
   }
 });
 
@@ -188,6 +210,12 @@ const initElements = () => {
   elements.homeIcon = document.querySelector("#homeIcon");
 }
 
+const initUI = () => {
+  let date = new Date();
+  let time = date.getHours() + ":" + date.getMinutes();
+  elements.time.innerHTML = "Time: " + time;
+}
+
 const notifyUser = async (content) => {
   const permission = await askPermission();
   if (permission) {
@@ -230,7 +258,6 @@ const askPermission = async () => {
 const fetchWeather = (any) => {
   // one call https://api.openweathermap.org/data/2.5/onecall?lat=35&lon=139&appid=443d32ef6178b04a1373ff5dc5253bc3&exclude=minutely&units=metric
   //https://api.openweathermap.org/data/2.5/weather?q=delhi&APPID=443d32ef6178b04a1373ff5dc5253bc3&units=metric
-
   if (any.keyCode == 13) {
     const APP_ID = "443d32ef6178b04a1373ff5dc5253bc3";
     let units = "metric";
@@ -246,45 +273,42 @@ const fetchWeather = (any) => {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        weather = { ...data };
-        elements.city.innerHTML = data.name;
-        elements.temp.innerHTML = parseInt(data.main.temp) + "°C";
-        elements.weather.innerHTML = data.weather[0].main;
-        elements.hi_low.innerHTML = parseInt(data.main.temp_min) + "°C / "
-          + parseInt(data.main.temp_max) + "°C";
-
-        coords = {
-          latitude: data.coord.lat,
-          longitude: data.coord.lon
-        }
-
-        let date = new Date(0);
-        date.setUTCSeconds(data.dt);
-        let time = date.getHours() + ":" + date.getMinutes();
-        elements.time.innerHTML = "Time: " + time;
-
-        elements.feels_like.innerHTML = parseInt(data.main.feels_like) + "°C";
-        elements.humidity.innerHTML = data.main.humidity;
-
-        date = new Date(0);
-        date.setUTCSeconds(data.sys.sunrise);
-        let sunrise = date.getHours() + ":" + date.getMinutes();
-
-        date = new Date(0);
-        date.setUTCSeconds(data.sys.sunset);
-        let sunset = date.getHours() + ":" + date.getMinutes();
-
-        elements.sunrise.innerHTML = sunrise;
-        elements.sunset.innerHTML = sunset;
-
-        let icon = data.weather[0].icon;
-        elements.homeIcon.src = `https://openweathermap.org/img/wn/${icon}@2x.png`;
+        // weather = { ...data };
+        bindWeatherData(data)
         notifyUser(elements.city.innerHTML + " " + elements.temp.innerHTML);
-        saveCurrentWeather();
+        saveCurrentWeather('current_weather', data);
       });
   }
+}
 
+const bindWeatherData = (data) => {
+  elements.city.innerHTML = data.name;
+  elements.temp.innerHTML = parseInt(data.main.temp) + "°C";
+  elements.weather.innerHTML = data.weather[0].main;
+  elements.hi_low.innerHTML = parseInt(data.main.temp_min) + "°C / "
+    + parseInt(data.main.temp_max) + "°C";
 
+  coords = {
+    latitude: data.coord.lat,
+    longitude: data.coord.lon
+  }
+
+  elements.feels_like.innerHTML = parseInt(data.main.feels_like) + "°C";
+  elements.humidity.innerHTML = data.main.humidity;
+
+  date = new Date(0);
+  date.setUTCSeconds(data.sys.sunrise);
+  let sunrise = date.getHours() + ":" + date.getMinutes();
+
+  date = new Date(0);
+  date.setUTCSeconds(data.sys.sunset);
+  let sunset = date.getHours() + ":" + date.getMinutes();
+
+  elements.sunrise.innerHTML = sunrise;
+  elements.sunset.innerHTML = sunset;
+
+  let icon = data.weather[0].icon;
+  elements.homeIcon.src = `https://openweathermap.org/img/wn/${icon}@2x.png`;
 }
 
 const fetchDailyWeather = () => {
@@ -297,39 +321,42 @@ const fetchDailyWeather = () => {
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
-      let daysWeather = { ...data };
-      if (daysWeather && daysWeather.list) {
-        daysWeather.list.forEach(element => {
-
-          let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-          let icon = `https://openweathermap.org/img/wn/${element.weather[0].icon}@2x.png`;
-          var d = new Date(0);
-          d.setUTCSeconds(element.dt)
-          var hours = d.getHours();
-          let dayName = days[d.getDay()];
-
-          d = new Date(0);
-          d.setUTCSeconds(element.sunrise)
-          let sunrise = d.getHours() + ":" + d.getMinutes();
-
-          d = new Date(0);
-          d.setUTCSeconds(element.sunset)
-          let sunset = d.getHours() + ":" + d.getMinutes();
-          var dayData = {
-            dayName: dayName,
-            temp: parseInt(element.temp.day),
-            sunrise: sunrise,
-            sunset: sunset,
-            feels_like: parseInt(element.feels_like.day),
-            humidity: element.humidity,
-            icon: icon
-          }
-          dailyElements.dayList.appendChild(createDayItem(dayData));
-        });
-      }
+      saveCurrentWeather('daily_weather', data)
+      bindDailyWeather(data)
     });
 }
 
+const bindDailyWeather = (daysWeather) => {
+  if (daysWeather && daysWeather.list) {
+    daysWeather.list.forEach(element => {
+
+      let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      let icon = `https://openweathermap.org/img/wn/${element.weather[0].icon}@2x.png`;
+      var d = new Date(0);
+      d.setUTCSeconds(element.dt)
+      var hours = d.getHours();
+      let dayName = days[d.getDay()];
+
+      d = new Date(0);
+      d.setUTCSeconds(element.sunrise)
+      let sunrise = d.getHours() + ":" + d.getMinutes();
+
+      d = new Date(0);
+      d.setUTCSeconds(element.sunset)
+      let sunset = d.getHours() + ":" + d.getMinutes();
+      var dayData = {
+        dayName: dayName,
+        temp: parseInt(element.temp.day),
+        sunrise: sunrise,
+        sunset: sunset,
+        feels_like: parseInt(element.feels_like.day),
+        humidity: element.humidity,
+        icon: icon
+      }
+      dailyElements.dayList.appendChild(createDayItem(dayData));
+    });
+  }
+}
 
 const fetchHourlyWeather = () => {
   //hours api https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=35&lon=139&appid=b1b15e88fa797225412429c1c50c122a1
@@ -341,49 +368,57 @@ const fetchHourlyWeather = () => {
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
-      let hourlyWeather = { ...data }
-      if (hourlyWeather && hourlyWeather.list) {
-        hourlyWeather.list.forEach(element => {
-          var d = new Date(0);
-          d.setUTCSeconds(element.dt)
-          var hours = d.getHours();
-          let icon = `https://openweathermap.org/img/wn/${element.weather[0].icon}@2x.png`;
-          var hourData = {
-            hours: hours,
-            temp: parseInt(element.main.temp),
-            feels_like: parseInt(element.main.feels_like),
-            humidity: element.main.humidity,
-            icon: icon
-          }
-          hoursElements.hoursList.appendChild(createHoursItem(hourData));
-        });
+      if (data) {
+        saveCurrentWeather('hourly_weather', data)
+        bindHourlyWeather(data)
       }
     });
 }
 
-const saveCurrentWeather = async () => {
+const bindHourlyWeather = (hourlyWeather) => {
+  if (hourlyWeather && hourlyWeather.list) {
+    hourlyWeather.list.forEach(element => {
+      var d = new Date(0);
+      d.setUTCSeconds(element.dt)
+      var hours = d.getHours();
+      let icon = `https://openweathermap.org/img/wn/${element.weather[0].icon}@2x.png`;
+      var hourData = {
+        hours: hours,
+        temp: parseInt(element.main.temp),
+        feels_like: parseInt(element.main.feels_like),
+        humidity: element.main.humidity,
+        icon: icon
+      }
+      hoursElements.hoursList.appendChild(createHoursItem(hourData));
+    });
+  }
+}
+
+const saveCurrentWeather = async (key, weather) => {
   console.log('saving current weather:', weather);
 
   try {
-    await localforage.setItem('current_weather', weather);
+    await localforage.setItem(key, weather);
   } catch (e) {
     return console.log('error', e);
   }
   console.log('saving current weather success');
 };
 
-const loadCurrentWeather = async () => {
+const loadCurrentWeather = async (key) => {
   console.log('loading Current Weather');
 
   try {
-    const currentWeather = await localforage.getItem('current_weather');
+    const currentWeather = await localforage.getItem(key);
     if (currentWeather && Object.keys(currentWeather).length !== 0) {
-      weather = { ...currentWeather };
+      // weather = { ...currentWeather };
+      return currentWeather;
     }
     console.log('loadState success');
   } catch (e) {
     console.log('error loading state', e);
   }
+  return null;
 };
 
 const changePage = (page, data) => {

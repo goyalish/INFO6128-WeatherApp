@@ -11,7 +11,7 @@ const filesToCache = [
 "assets/images/icon.png",
 "assets/images/offline.svg", 
 "src/appp.css",
-"https://myleschuahiock.files.wordpress.com/2016/02/sunny2.png",
+"src/app.js",
 "https://unpkg.com/onsenui/css/onsenui.css",
 "https://unpkg.com/onsenui/css/onsen-css-components.min.css",
 "https://unpkg.com/localforage@1.10.0/dist/localforage.min.js",
