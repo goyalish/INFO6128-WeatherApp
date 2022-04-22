@@ -228,7 +228,7 @@ const notifyUser = async (title, msg) => {
 }
 
 // const notify = (title, msg) => new Notification(title, msg);
-const notify = (title, msg) => !msg?.actions ? new Notification(title, msg) : serviceWorkerNotify(title, msg);
+const notify = (title, msg) => serviceWorkerNotify(title, msg);
 const askPermission = async () => {
   // Is Web Notifications available on the browser
   if (!("Notification" in window)) {
